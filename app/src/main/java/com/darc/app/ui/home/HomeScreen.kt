@@ -27,7 +27,8 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onNavigateToRoutines: () -> Unit = {},
     onNavigateToDailyTasks: () -> Unit = {},
-    onNavigateToProfile: () -> Unit = {}
+    onNavigateToProfile: () -> Unit = {},
+    onNavigateToRecovery: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val player = uiState.player

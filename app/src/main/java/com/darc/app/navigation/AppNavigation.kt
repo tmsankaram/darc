@@ -13,6 +13,7 @@ import com.darc.app.ui.daily.DailyTasksScreen
 import com.darc.app.ui.home.HomeScreen
 import com.darc.app.ui.onboarding.OnboardingScreen
 import com.darc.app.ui.profile.ProfileScreen
+import com.darc.app.ui.recovery.RecoveryScreen
 import com.darc.app.ui.routines.RoutineDetailScreen
 import com.darc.app.ui.routines.RoutinesScreen
 
@@ -20,6 +21,7 @@ sealed class Screen(val route: String) {
     object Onboarding : Screen("onboarding")
     object Home : Screen("home")
     object Profile : Screen("profile")
+    object Recovery : Screen("recovery")
     object Routines : Screen("routines")
     object DailyTasks : Screen("daily")
     object RoutineDetail : Screen("routine/{routineId}") {
@@ -66,6 +68,9 @@ fun AppNavigation(
                     },
                     onNavigateToProfile = {
                         navController.navigate(Screen.Profile.route)
+                    },
+                    onNavigateToRecovery = {
+                        navController.navigate(Screen.Recovery.route)
                     }
                 )
             }
@@ -73,6 +78,13 @@ fun AppNavigation(
             composable(Screen.Profile.route) {
                 ProfileScreen(
                     onBackClick = { navController.popBackStack() }
+                )
+            }
+
+            composable(Screen.Recovery.route) {
+                RecoveryScreen(
+                    onBackClick = { navController.popBackStack() },
+                    onRecoverySuccess = { navController.popBackStack() }
                 )
             }
 

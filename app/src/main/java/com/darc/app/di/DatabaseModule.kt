@@ -22,7 +22,7 @@ object DatabaseModule {
             context,
             DarcDatabase::class.java,
             "darc_db"
-        ).fallbackToDestructiveMigration() // For v1/dev only
+        ).fallbackToDestructiveMigration(true) // For v1/dev only
          .build()
     }
 

@@ -24,6 +24,10 @@ class PlayerRepository @Inject constructor(
 ) {
     fun getPlayer(): Flow<PlayerEntity?> = playerDao.getPlayer()
 
+    suspend fun updatePlayer(player: PlayerEntity) {
+        playerDao.updatePlayer(player)
+    }
+
     suspend fun createPlayer(name: String, focus: String) {
         val player = PlayerEntity(
             id = 1,

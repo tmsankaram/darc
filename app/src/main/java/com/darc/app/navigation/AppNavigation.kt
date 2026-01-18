@@ -12,12 +12,14 @@ import androidx.navigation.navArgument
 import com.darc.app.ui.daily.DailyTasksScreen
 import com.darc.app.ui.home.HomeScreen
 import com.darc.app.ui.onboarding.OnboardingScreen
+import com.darc.app.ui.profile.ProfileScreen
 import com.darc.app.ui.routines.RoutineDetailScreen
 import com.darc.app.ui.routines.RoutinesScreen
 
 sealed class Screen(val route: String) {
     object Onboarding : Screen("onboarding")
     object Home : Screen("home")
+    object Profile : Screen("profile")
     object Routines : Screen("routines")
     object DailyTasks : Screen("daily")
     object RoutineDetail : Screen("routine/{routineId}") {
@@ -61,7 +63,16 @@ fun AppNavigation(
                     },
                     onNavigateToDailyTasks = {
                         navController.navigate(Screen.DailyTasks.route)
+                    },
+                    onNavigateToProfile = {
+                        navController.navigate(Screen.Profile.route)
                     }
+                )
+            }
+
+            composable(Screen.Profile.route) {
+                ProfileScreen(
+                    onBackClick = { navController.popBackStack() }
                 )
             }
 

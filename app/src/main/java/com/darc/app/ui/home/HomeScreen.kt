@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,7 +26,8 @@ import com.darc.app.data.entity.PlayerEntity
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onNavigateToRoutines: () -> Unit = {},
-    onNavigateToDailyTasks: () -> Unit = {}
+    onNavigateToDailyTasks: () -> Unit = {},
+    onNavigateToProfile: () -> Unit = {}
 ) {
     val player by viewModel.player.collectAsState(initial = null)
 
@@ -47,8 +49,8 @@ fun HomeScreen(
                 .padding(24.dp)
         ) {
             player?.let { p ->
-                // Player Header
-                PlayerHeader(player = p)
+                // Player Header (clickable to go to profile)
+                PlayerHeader(player = p, onProfileClick = onNavigateToProfile)
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -162,7 +164,7 @@ private fun QuickActionCard(
 }
 
 @Composable
-private fun PlayerHeader(player: PlayerEntity) {
+private fun PlayerHeader(player: PlayerEntity, onProfileClick: () -> Unit = {}) {
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -193,12 +195,13 @@ private fun PlayerHeader(player: PlayerEntity) {
                 )
             }
 
-            // Level badge
+            // Level badge (clickable)
             Box(
                 modifier = Modifier
                     .size(64.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xFF2D1B4E)),
+                    .background(Color(0xFF2D1B4E))
+                    .clickable { onProfileClick() },
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {

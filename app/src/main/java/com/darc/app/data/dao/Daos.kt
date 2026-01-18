@@ -30,6 +30,9 @@ interface RoutineDao {
     @Query("SELECT * FROM routines")
     fun getAllRoutines(): Flow<List<RoutineEntity>>
 
+    @Query("SELECT * FROM routines WHERE id = :id")
+    fun getRoutineById(id: Long): Flow<RoutineEntity?>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRoutine(routine: RoutineEntity): Long
 
@@ -45,8 +48,20 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE routineId = :routineId")
     fun getTasksForRoutine(routineId: Long): Flow<List<TaskEntity>>
 
+    @Query("SELECT * FROM tasks")
+    fun getAllTasks(): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM tasks WHERE id = :id")
+    suspend fun getTaskById(id: Long): TaskEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(task: TaskEntity)
+
+    @Update
+    suspend fun updateTask(task: TaskEntity)
+
+    @Query("DELETE FROM tasks WHERE id = :id")
+    suspend fun deleteTask(id: Long)
 }
 
 @Dao

@@ -1,8 +1,11 @@
 package com.darc.app.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -10,16 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.darc.app.data.entity.PlayerEntity
-import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToRoutines: () -> Unit = {}
 ) {
     val player by viewModel.player.collectAsState(initial = null)
 
@@ -44,12 +48,38 @@ fun HomeScreen(
                 // Player Header
                 PlayerHeader(player = p)
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Quick Actions
+                Text(
+                    text = "QUICK ACTIONS",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF888888),
+                    letterSpacing = 2.sp
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    QuickActionCard(
+                        icon = Icons.Default.List,
+                        label = "Routines",
+                        color = Color(0xFFBB86FC),
+                        onClick = onNavigateToRoutines,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // Quick Stats
                 QuickStats(player = p)
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // Today's Tasks section placeholder
                 Text(
@@ -60,13 +90,13 @@ fun HomeScreen(
                     letterSpacing = 2.sp
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 // Placeholder for tasks
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)
+                        .height(150.dp)
                         .clip(RoundedCornerShape(12.dp))
                         .background(Color(0xFF1A1A1A)),
                     contentAlignment = Alignment.Center
@@ -85,6 +115,39 @@ fun HomeScreen(
                     CircularProgressIndicator(color = Color(0xFFBB86FC))
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun QuickActionCard(
+    icon: ImageVector,
+    label: String,
+    color: Color,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(Color(0xFF1A1A1A))
+            .clickable { onClick() }
+            .padding(16.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
+                tint = color,
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = label,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.White
+            )
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,7 +24,8 @@ import com.darc.app.data.entity.PlayerEntity
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    onNavigateToRoutines: () -> Unit = {}
+    onNavigateToRoutines: () -> Unit = {},
+    onNavigateToDailyTasks: () -> Unit = {}
 ) {
     val player by viewModel.player.collectAsState(initial = null)
 
@@ -65,6 +67,13 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
+                    QuickActionCard(
+                        icon = Icons.Default.PlayArrow,
+                        label = "Daily Tasks",
+                        color = Color(0xFF4ECDC4),
+                        onClick = onNavigateToDailyTasks,
+                        modifier = Modifier.weight(1f)
+                    )
                     QuickActionCard(
                         icon = Icons.Default.List,
                         label = "Routines",

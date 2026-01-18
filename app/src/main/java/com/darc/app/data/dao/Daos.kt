@@ -71,6 +71,12 @@ interface LogDao {
 
     @Query("SELECT * FROM logs WHERE taskId = :taskId ORDER BY timestamp DESC")
     fun getLogsForTask(taskId: Long): Flow<List<LogEntity>>
+
+    @Query("SELECT * FROM logs WHERE timestamp >= :since ORDER BY timestamp DESC")
+    fun getLogsSince(since: Long): Flow<List<LogEntity>>
+
+    @Query("SELECT * FROM logs WHERE taskId = :taskId AND timestamp >= :since LIMIT 1")
+    suspend fun getTaskLogForDate(taskId: Long, since: Long): LogEntity?
 }
 
 @Dao

@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.darc.app.ui.daily.DailyTasksScreen
 import com.darc.app.ui.home.HomeScreen
 import com.darc.app.ui.onboarding.OnboardingScreen
 import com.darc.app.ui.routines.RoutineDetailScreen
@@ -18,6 +19,7 @@ sealed class Screen(val route: String) {
     object Onboarding : Screen("onboarding")
     object Home : Screen("home")
     object Routines : Screen("routines")
+    object DailyTasks : Screen("daily")
     object RoutineDetail : Screen("routine/{routineId}") {
         fun createRoute(routineId: Long) = "routine/$routineId"
     }
@@ -56,6 +58,9 @@ fun AppNavigation(
                 HomeScreen(
                     onNavigateToRoutines = {
                         navController.navigate(Screen.Routines.route)
+                    },
+                    onNavigateToDailyTasks = {
+                        navController.navigate(Screen.DailyTasks.route)
                     }
                 )
             }
@@ -65,6 +70,12 @@ fun AppNavigation(
                     onRoutineClick = { routineId ->
                         navController.navigate(Screen.RoutineDetail.createRoute(routineId))
                     },
+                    onBackClick = { navController.popBackStack() }
+                )
+            }
+
+            composable(Screen.DailyTasks.route) {
+                DailyTasksScreen(
                     onBackClick = { navController.popBackStack() }
                 )
             }

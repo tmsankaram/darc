@@ -29,7 +29,8 @@ fun HomeScreen(
     onNavigateToDailyTasks: () -> Unit = {},
     onNavigateToProfile: () -> Unit = {}
 ) {
-    val player by viewModel.player.collectAsState(initial = null)
+    val uiState by viewModel.uiState.collectAsState()
+    val player = uiState.player
 
     Box(
         modifier = Modifier
@@ -88,7 +89,12 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Quick Stats
-                QuickStats(player = p)
+                QuickStats(
+                    currentStreak = uiState.streak?.currentStreak ?: 0,
+                    completedToday = uiState.todayCompletedCount,
+                    totalToday = uiState.todayTotalCount,
+                    revivalTokens = uiState.streak?.revivalTokens ?: 0
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -255,14 +261,19 @@ private fun PlayerHeader(player: PlayerEntity, onProfileClick: () -> Unit = {}) 
 }
 
 @Composable
-private fun QuickStats(player: PlayerEntity) {
+private fun QuickStats(
+    currentStreak: Int,
+    completedToday: Int,
+    totalToday: Int,
+    revivalTokens: Int
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        StatCard(label = "STREAK", value = "0", color = Color(0xFFFF6B6B))
-        StatCard(label = "TASKS", value = "0/0", color = Color(0xFF4ECDC4))
-        StatCard(label = "TOKENS", value = "0", color = Color(0xFFFFE66D))
+        StatCard(label = "STREAK", value = "$currentStreak", color = Color(0xFFFF6B6B))
+        StatCard(label = "TASKS", value = "$completedToday/$totalToday", color = Color(0xFF4ECDC4))
+        StatCard(label = "TOKENS", value = "$revivalTokens", color = Color(0xFFFFE66D))
     }
 }
 
